@@ -1,1 +1,5 @@
-docker build -t barber_app/admin_microservice .
+#Za bildovanje image-a
+docker build -t barber_app/admin_microservice .  
+
+#Za pokretanje docker-compose fajla
+docker-compose up --build
