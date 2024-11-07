@@ -2,6 +2,7 @@ package com.BarberShop.AdminMicroservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,5 +22,12 @@ public class PropertyController {
     public String message(@RequestBody String message) {
         System.out.println(message);
         return "Primljena poruka:" + message;
+    }
+
+    @GetMapping("/Test")
+    public ResponseEntity<String> test(Boolean state) {
+        if(state)
+            return ResponseEntity.ok("Test is ok");
+        return ResponseEntity.badRequest().body("Simulated Bad Request for Circuit Breaker Testing");
     }
 }
