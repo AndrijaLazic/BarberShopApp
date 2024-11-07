@@ -23,6 +23,13 @@ public class TestController {
 
     @GetMapping("/Test")
     public ResponseEntity<String> test(Boolean state) {
-        return adminMSClient.fail(state);
+        ResponseEntity<String> response;
+        try{
+            response = adminMSClient.test(state);
+        }
+        catch (Exception e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+        return response;
     }
 }

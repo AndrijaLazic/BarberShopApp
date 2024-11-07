@@ -12,7 +12,7 @@ public class AdminFallback implements AdminMSClient {
     }
 
     @Override
-    public ResponseEntity<String> fail(Boolean state) {
+    public ResponseEntity<String> test(Boolean state) {
         return ResponseEntity.internalServerError().body("Admin service is not available");
     }
 }
