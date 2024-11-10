@@ -20,6 +20,28 @@ services:
     command: redis-server --save 20 1 --loglevel warning
     container_name: barber-shop-redis
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    environment:
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 7080
+      KC_HOSTNAME_STRICT_BACKCHANNEL: "true"
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: "true"
+      KC_LOG_LEVEL: info
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7080/health/ready"]
+      interval: 15s
+      timeout: 2s
+      retries: 15
+    command: ["start-dev", "--http-port", "7080"]
+    ports:
+      - "7080:7080"
+    networks:
+      - barber_app
+
+
   AdminMicroservice:
     image: "barber_app/admin_microservice"
     container_name: admin-ms
