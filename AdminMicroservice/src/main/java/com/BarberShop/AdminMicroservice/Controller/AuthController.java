@@ -51,10 +51,9 @@ public class AuthController {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("client_id", "barbershop-api");
         body.add("client_secret", "7Hm8kLf4644clIcnGSrBOFnWh8HTZDIa");
-        body.add("grant_type", "client_credentials");
+        body.add("grant_type", "password");
         body.add("username", adminUserDto.getEmail());
         body.add("password", adminUserDto.getPassword());
-        body.add("scope", "email");
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
 

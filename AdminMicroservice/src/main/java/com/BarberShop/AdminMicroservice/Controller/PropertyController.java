@@ -3,6 +3,8 @@ package com.BarberShop.AdminMicroservice.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,5 +29,15 @@ public class PropertyController {
         if(state)
             return ResponseEntity.ok("Test is ok");
         return ResponseEntity.badRequest().body("Simulated Bad Request for Circuit Breaker Testing");
+    }
+
+    @GetMapping("/IsAuthorized")
+    public ResponseEntity<String> notAuthorized() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (null != authentication){
+            return ResponseEntity.status(200).body("Authorized"+authentication.getName());
+        }else{
+            return ResponseEntity.status(200).body("Not Authorized route");
+        }
     }
 }

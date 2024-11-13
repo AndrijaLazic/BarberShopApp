@@ -1,5 +1,6 @@
 package com.BarberShop.AdminMicroservice.Configs;
 
+import com.BarberShop.AdminMicroservice.Filters.CustomFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -20,8 +22,10 @@ public class SecurityConfig {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
         http.csrf(csrfConfig -> csrfConfig.disable())
+        .addFilterAfter(new CustomFilter(), BasicAuthenticationFilter.class)
         .authorizeHttpRequests((request)->{
-            request.requestMatchers("/Test/**").authenticated()
+            request.requestMatchers("/Test/IsAuthorized").permitAll()
+                    .requestMatchers("/Test/**").authenticated()
                     .requestMatchers("/**").permitAll();
         });
 
