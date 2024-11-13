@@ -21,13 +21,13 @@ public class SecurityConfig {
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
         http.csrf(csrfConfig -> csrfConfig.disable())
         .authorizeHttpRequests((request)->{
-            request.anyRequest().permitAll();
-//            request.requestMatchers("/Test/**").authenticated();
+            request.requestMatchers("/Test/**").authenticated()
+                    .requestMatchers("/**").permitAll();
         });
 
-//        http.oauth2ResourceServer(rsc->rsc.jwt(jwtConfigurer -> {
-//            jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter);
-//        }));
+        http.oauth2ResourceServer(rsc->rsc.jwt(jwtConfigurer -> {
+            jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter);
+        }));
 
         return http.build();
     }

@@ -11,7 +11,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.*;
 
 @Service
 public class KeycloakService {
@@ -55,6 +55,11 @@ public class KeycloakService {
         user.setLastName(lastName);
         user.setEnabled(true);
         user.setEmailVerified(true);
+
+        Map<String, List<String>> clientRoles = new HashMap<>();
+        clientRoles.put("barbershop-api", Arrays.asList("app_user"));
+
+        user.setClientRoles(clientRoles);
 
         CredentialRepresentation credential = new CredentialRepresentation();
         credential.setType(CredentialRepresentation.PASSWORD);
