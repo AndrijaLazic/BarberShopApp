@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
+@Configuration
 public class RateLimitingConfig {
 
     KeyResolver ipKeyResolver() {

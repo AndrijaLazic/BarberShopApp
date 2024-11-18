@@ -13,40 +13,40 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
-@Order(1)//order of execution of filters, in this case it will always be executed first
-@Component
-public class RequestTraceFilter implements GlobalFilter {
-
-    private static final Logger logger = LoggerFactory.getLogger(RequestTraceFilter.class);
-
-    @Autowired
-    FilterUtility filterUtility;
-
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
-        LocalDateTime timestamp = LocalDateTime.now();
-        if (isCorrelationIdPresent(requestHeaders)) {
-            logger.debug("correlation-id found in RequestTraceFilter : {}",
-                    filterUtility.getCorrelationId(requestHeaders));
-        } else {
-            String correlationID = generateCorrelationId();
-            exchange = filterUtility.setCorrelationId(exchange, correlationID);
-            logger.debug("correlation-id generated in RequestTraceFilter : {}", correlationID);
-        }
-        return chain.filter(exchange);
-    }
-
-    private boolean isCorrelationIdPresent(HttpHeaders requestHeaders) {
-        if (filterUtility.getCorrelationId(requestHeaders) != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private String generateCorrelationId() {
-        return java.util.UUID.randomUUID().toString();
-    }
-
-}
+//@Order(1)//order of execution of filters, in this case it will always be executed first
+//@Component
+//public class RequestTraceFilter implements GlobalFilter {
+//
+//    private static final Logger logger = LoggerFactory.getLogger(RequestTraceFilter.class);
+//
+//    @Autowired
+//    FilterUtility filterUtility;
+//
+//    @Override
+//    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+//        HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
+//        LocalDateTime timestamp = LocalDateTime.now();
+//        if (isCorrelationIdPresent(requestHeaders)) {
+//            logger.debug("correlation-id found in RequestTraceFilter : {}",
+//                    filterUtility.getCorrelationId(requestHeaders));
+//        } else {
+//            String correlationID = generateCorrelationId();
+//            exchange = filterUtility.setCorrelationId(exchange, correlationID);
+//            logger.debug("correlation-id generated in RequestTraceFilter : {}", correlationID);
+//        }
+//        return chain.filter(exchange);
+//    }
+//
+//    private boolean isCorrelationIdPresent(HttpHeaders requestHeaders) {
+//        if (filterUtility.getCorrelationId(requestHeaders) != null) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//    private String generateCorrelationId() {
+//        return java.util.UUID.randomUUID().toString();
+//    }
+//
+//}

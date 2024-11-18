@@ -17,19 +17,19 @@ public class BarberShopRouting {
         return builder.routes()
                 .route(r -> r.path("/user/**")
                         .filters(f -> f.rewritePath("/user/(?<segment>.*)","/${segment}")
-                                .circuitBreaker(config -> {
-                                    config.setName("userCircuitBreaker");
-                                    config.setFallbackUri("forward:/contactSupport");
-                                })
+//                                .circuitBreaker(config -> {
+//                                    config.setName("userCircuitBreaker");
+//                                    config.setFallbackUri("forward:/contactSupport");
+//                                })
                         )
                         .uri("lb://USERAPP"))
 
                 .route(r -> r.path("/admin/**")
                         .filters(f -> f.rewritePath("/admin/(?<segment>.*)","/${segment}")
-                                .circuitBreaker(config -> {
-                                    config.setName("adminCircuitBreaker");
-                                    config.setFallbackUri("forward:/contactSupport");
-                                })
+//                                .circuitBreaker(config -> {
+//                                    config.setName("adminCircuitBreaker");
+//                                    config.setFallbackUri("forward:/contactSupport");
+//                                })
                                 .requestRateLimiter(rate->rate.setRateLimiter(rateLimitingConfig.oneRequestPerSecond()).setKeyResolver(rateLimitingConfig.ipKeyResolver()))
                         )
                         .uri("lb://ADMINMICROSERVICE"))

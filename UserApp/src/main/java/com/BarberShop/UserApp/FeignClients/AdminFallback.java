@@ -15,4 +15,9 @@ public class AdminFallback implements AdminMSClient {
     public ResponseEntity<String> test(Boolean state) {
         return ResponseEntity.internalServerError().body("Admin service is not available");
     }
+
+    @Override
+    public ResponseEntity<String> testAuthorized() {
+        return null;
+    }
 }

@@ -28,6 +28,18 @@ public class TestController {
             response = adminMSClient.test(state);
         }
         catch (Exception e){
+            return ResponseEntity.internalServerError().body(e.toString());
+        }
+        return response;
+    }
+
+    @GetMapping("/Test/IsAuthorized")
+    public ResponseEntity<String> testAuthorized() {
+        ResponseEntity<String> response;
+        try{
+            response = adminMSClient.testAuthorized();
+        }
+        catch (Exception e){
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
         return response;

@@ -21,7 +21,17 @@ public class FilterUtility {
     }
 
     public ServerWebExchange setRequestHeader(ServerWebExchange exchange, String name, String value) {
-        return exchange.mutate().request(exchange.getRequest().mutate().header(name, value).build()).build();
+        //This change is needed to avoid concurrent readonly headers
+        HttpHeaders mutableHeaders = new HttpHeaders();
+        mutableHeaders.putAll(exchange.getRequest().getHeaders());
+
+        mutableHeaders.set(name, value);
+
+        return exchange.mutate()
+                .request(exchange.getRequest().mutate()
+                        .headers(httpHeaders -> httpHeaders.putAll(mutableHeaders))
+                        .build())
+                .build();
     }
 
     public ServerWebExchange setCorrelationId(ServerWebExchange exchange, String correlationId) {
