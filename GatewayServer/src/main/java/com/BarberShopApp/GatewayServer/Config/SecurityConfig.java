@@ -17,14 +17,16 @@ public class SecurityConfig {
     @Bean
     SecurityWebFilterChain defaultSecurityFilterChain(ServerHttpSecurity http){
         http.authorizeExchange(exchange->{
-            exchange.pathMatchers("/user/**").authenticated();
             exchange.pathMatchers("/user/actuator/**").permitAll();
-            exchange.pathMatchers("/user/swagger-ui.html").permitAll();
+            exchange.pathMatchers("/user/swagger-ui/**").permitAll();
             exchange.pathMatchers("/user/v3/api-docs/**").permitAll();
+            exchange.pathMatchers("/user/swagger-ui.html").permitAll();
+            exchange.pathMatchers("/user/**").authenticated();
             exchange.pathMatchers("/admin/Auth/login").permitAll();
             exchange.pathMatchers("/admin/actuator/**").permitAll();
-            exchange.pathMatchers("/admin/swagger-ui.html").permitAll();
+            exchange.pathMatchers("/admin/swagger-ui/**").permitAll();
             exchange.pathMatchers("/admin/v3/api-docs/**").permitAll();
+            exchange.pathMatchers("/admin/swagger-ui.html").permitAll();
             exchange.pathMatchers("/admin/**").authenticated();
             exchange.pathMatchers("/**").permitAll();
         }).oauth2ResourceServer(rsc->rsc.jwt(Customizer.withDefaults()));

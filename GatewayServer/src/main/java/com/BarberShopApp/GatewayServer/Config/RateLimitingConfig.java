@@ -12,6 +12,7 @@ import java.util.Optional;
 @Configuration
 public class RateLimitingConfig {
 
+    @Bean
     KeyResolver ipKeyResolver() {
         return exchange -> {
             String ip = Optional.ofNullable(exchange.getRequest().getRemoteAddress())
@@ -21,7 +22,7 @@ public class RateLimitingConfig {
         };
     }
 
-
+    @Bean
     public RedisRateLimiter oneRequestPerSecond() {
         return new RedisRateLimiter(1,1,1);
     }

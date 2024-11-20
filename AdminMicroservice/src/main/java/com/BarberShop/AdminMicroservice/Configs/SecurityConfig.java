@@ -24,8 +24,12 @@ public class SecurityConfig {
         http.csrf(csrfConfig -> csrfConfig.disable())
         .addFilterAfter(new CustomFilter(), BasicAuthenticationFilter.class)
         .authorizeHttpRequests((request)->{
-            request.requestMatchers("/Test/IsAuthorized").permitAll()
-                    .requestMatchers("/Test/**").authenticated()
+            request
+//                    .requestMatchers("/Test/IsAuthorized").permitAll()
+//                    .requestMatchers("/Test/**").authenticated()
+//                    .requestMatchers("/user/swagger-ui/**").permitAll()
+//                    .requestMatchers("/user/v3/api-docs/**").permitAll()
+//                    .requestMatchers("/user/swagger-ui.html").permitAll()
                     .requestMatchers("/**").permitAll();
         });
 
