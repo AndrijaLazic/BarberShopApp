@@ -13,6 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -22,22 +28,35 @@ public class SecurityConfig {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
         http.csrf(csrfConfig -> csrfConfig.disable())
-        .addFilterAfter(new CustomFilter(), BasicAuthenticationFilter.class)
-        .authorizeHttpRequests((request)->{
-            request
-//                    .requestMatchers("/Test/IsAuthorized").permitAll()
-//                    .requestMatchers("/Test/**").authenticated()
-//                    .requestMatchers("/user/swagger-ui/**").permitAll()
-//                    .requestMatchers("/user/v3/api-docs/**").permitAll()
-//                    .requestMatchers("/user/swagger-ui.html").permitAll()
-                    .requestMatchers("/**").permitAll();
-        });
+            .cors(c -> c.configurationSource(corsConfigurationSource()))
+            .addFilterAfter(new CustomFilter(), BasicAuthenticationFilter.class)
+            .authorizeHttpRequests((request)->{
+                request
+    //                    .requestMatchers("/Test/IsAuthorized").permitAll()
+    //                    .requestMatchers("/Test/**").authenticated()
+    //                    .requestMatchers("/user/swagger-ui/**").permitAll()
+    //                    .requestMatchers("/user/v3/api-docs/**").permitAll()
+    //                    .requestMatchers("/user/swagger-ui.html").permitAll()
+                        .anyRequest().permitAll();
+            });
 
         http.oauth2ResourceServer(rsc->rsc.jwt(jwtConfigurer -> {
             jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter);
         }));
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

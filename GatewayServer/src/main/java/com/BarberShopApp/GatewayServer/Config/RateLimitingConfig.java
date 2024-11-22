@@ -24,7 +24,7 @@ public class RateLimitingConfig {
 
     @Bean
     public RedisRateLimiter oneRequestPerSecond() {
-        return new RedisRateLimiter(1,1,1);
+        return new RedisRateLimiter(10,10,1);
     }
 
 }
